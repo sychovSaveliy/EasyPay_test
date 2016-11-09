@@ -29,6 +29,7 @@ var icons = JSON.parse(IconJson);
 var IconsActions = new Object();
 
 IconsActions.selected = null;	
+IconsActions.selected_obj = null;		
 IconsActions.showInfo = function (obj) {
 	var main_container = container;
 	//console.log(obj);
@@ -42,6 +43,7 @@ IconsActions.showInfo = function (obj) {
 		
 		let tbl = document.createElement("table");
 		tbl.className = "tbl";
+		tbl.setAttribute("data-obj", i);
 		//tbl.setAttribute("border","1");
 		tbl_item.appendChild(tbl);
 		
@@ -49,15 +51,17 @@ IconsActions.showInfo = function (obj) {
 		tbl.appendChild(tbl_row);
 		for (let item in obj[i]) {
 			let tbl_td = document.createElement("td");
+			tbl_td.setAttribute("data-type", item);
 			tbl_td.innerHTML = obj[i][item];
 			tbl_row.appendChild(tbl_td);
 		
 			
-			tbl_td.addEventListener("contextmenu", function (e){
-				IconsActions.selected = this;
+			tbl_td.addEventListener("contextmenu", function (e) {
+				IconsActions.selected = this.getAttribute("data-type");
+				IconsActions.selected_obj = this.parentNode.parentNode.getAttribute("data-obj");
 				e.preventDefault();
 				var textarea = document.getElementById("edit_text");
-				textarea.innerHTML = this.innerHTML;
+				textarea.value = this.innerHTML;
 			});
 			
 		}
@@ -69,10 +73,15 @@ IconsActions.showInfo = function (obj) {
 IconsActions.setInfo = function() {
 	var btn_set = document.getElementById("setInfo");
 	var textarea = document.getElementById("edit_text");
+	icons[IconsActions.selected_obj][IconsActions.selected] = textarea.value;
 	console.log(icons);
-	IconsActions.selected.innerHTML = textarea.innerHTML;
-	console.log(IconsActions);
-	
+
+	container.innerHTML= '';
+	IconsActions.showInfo(icons);
+	textarea.innerHTML = '';
+	textarea.value = '';
+	console.log(textarea.value);
+	textarea.value = '';
 }
 //console.log(icons);
 btn_set = document.getElementById("setInfo");
@@ -84,9 +93,8 @@ var container = document.getElementById("main");
 var btn_show = document.getElementById("show");
 btn_show.addEventListener("click", function(e){
 	//console.log(e);
+	container.innerHTML= '';
 	IconsActions.showInfo(icons);
-
-	
 });
 
 	
