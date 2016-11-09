@@ -1,3 +1,27 @@
 .main
 	display: flex
 	flex-direction: column
+
+.tbl
+	td
+		padding: 8px
+		width: 300px
+		border: 1px solid black
+		cursor: pointer
+		transition: all .1s ease-in
+		&:hover
+			background-color: grey
+
+#edit
+	position: fixed
+	width: 400px
+	height:  200px
+	top: 250px
+	left: 250px
+	border-radius: 2px
+	display: flex
+	align-items: center
+	justify-content: space-around
+	background-color: rgba(0, 0, 0, 0.3)
+	input[type="text"]
+		height: 50px
